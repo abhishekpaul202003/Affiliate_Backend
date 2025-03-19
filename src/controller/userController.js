@@ -6,9 +6,11 @@ const { userProfileURL } = require('../cloudinary/ImageUrl')
 
 
 exports.CreateUser = async (req, res) => {
-    try {
+    try { 
         const data = req.body;
         const imgData = req.file;
+
+        console.log(data)
         const { name, email, password } = data;
         const randomOTP = Math.floor(1000 + Math.random() * 9000)
 
