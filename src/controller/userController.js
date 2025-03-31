@@ -22,7 +22,7 @@ exports.CreateUser = async (req, res) => {
             if (checkUser.isVerify) return res.status(400).send({ status: true, msg: 'Account Already Verify Pls LogIn' })
             OtpVerification(name, email, randomOTP)
 
-            return res.status(200).send({ status: true, msg: 'Otp Send Successfully...', id: checkUser._id })
+            return res.status(200).send({ status: true, msg: 'Otp Send Successfully...', id: checkUser._id,email:checkUser.email })
         }
 
         if (imgData) data.profileImg = await userProfileURL(imgData.path)
@@ -33,7 +33,7 @@ exports.CreateUser = async (req, res) => {
         data.role = 'user'
         OtpVerification(name, email, randomOTP)
         const DB = await userModel.create(data)
-        res.status(201).send({ status: true, msg: 'Successfully SignUp', id: DB._id })
+        res.status(201).send({ status: true, msg: 'Successfully SignUp', id: DB._id,email:DB.email })
 
 
     }
