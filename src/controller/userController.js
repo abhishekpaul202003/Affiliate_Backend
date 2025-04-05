@@ -10,7 +10,6 @@ exports.CreateUser = async (req, res) => {
         const data = req.body;
         const imgData = req.file;
 
-        console.log(data)
         const { name, email, password } = data;
         const randomOTP = Math.floor(1000 + Math.random() * 9000)
 
@@ -86,9 +85,15 @@ exports.UserLogIn = async (req, res) => {
         const checkPass = await bcrypt.compare(password, findUser.password)
         if (!checkPass) return res.status(400).send({ status: false, msg: 'Wrong Password' })
 
+            const userData = {
+                img:findUser.profileImg,
+                name:findUser.name,
+                email:findUser.email,
+            }
+
         const token = await jwt.sign({ userId: findUser._id }, process.env.UserToken, { expiresIn: '1m' })
 
-        res.status(200).send({ status: true, userid: findUser._id, token: token })
+        res.status(200).send({ status: true, userid: findUser._id, token: token,data:userData })
 
     }
     catch (err) { return res.status(500).send({ status: false, msg: err.message }) }
