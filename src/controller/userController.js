@@ -6,7 +6,7 @@ const { userProfileURL } = require('../cloudinary/ImageUrl')
 
 
 exports.CreateUser = async (req, res) => {
-    try { 
+    try {
         const data = req.body;
         const imgData = req.file;
 
@@ -21,10 +21,13 @@ exports.CreateUser = async (req, res) => {
             if (checkUser.isVerify) return res.status(400).send({ status: true, msg: 'Account Already Verify Pls LogIn' })
             OtpVerification(name, email, randomOTP)
 
-            return res.status(200).send({ status: true, msg: 'Otp Send Successfully...', id: checkUser._id,email:checkUser.email })
+            return res.status(200).send({ status: true, msg: 'Otp Send Successfully...', id: checkUser._id, email: checkUser.email })
         }
 
-        if (imgData) data.profileImg = await userProfileURL(imgData.path)
+        if (imgData) {
+            const producturl = await userProfileURL(img.path)
+            data.images = [{ public_id: producturl.public_id, url: producturl.secure_url }]
+        }
 
         data.password = await bcrypt.hash(password, 10)
 
@@ -32,7 +35,7 @@ exports.CreateUser = async (req, res) => {
         data.role = 'user'
         OtpVerification(name, email, randomOTP)
         const DB = await userModel.create(data)
-        res.status(201).send({ status: true, msg: 'Successfully SignUp', id: DB._id,email:DB.email })
+        res.status(201).send({ status: true, msg: 'Successfully SignUp', id: DB._id, email: DB.email })
 
 
     }
@@ -85,15 +88,15 @@ exports.UserLogIn = async (req, res) => {
         const checkPass = await bcrypt.compare(password, findUser.password)
         if (!checkPass) return res.status(400).send({ status: false, msg: 'Wrong Password' })
 
-            const userData = {
-                img:findUser.profileImg,
-                name:findUser.name,
-                email:findUser.email,
-            }
+        const userData = {
+            img: findUser.profileImg,
+            name: findUser.name,
+            email: findUser.email,
+        }
 
         const token = await jwt.sign({ userId: findUser._id }, process.env.UserToken, { expiresIn: '1m' })
 
-        res.status(200).send({ status: true, userid: findUser._id, token: token,data:userData })
+        res.status(200).send({ status: true, userid: findUser._id, token: token, data: userData })
 
     }
     catch (err) { return res.status(500).send({ status: false, msg: err.message }) }
