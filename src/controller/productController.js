@@ -10,6 +10,8 @@ exports.product = async (req, res) => {
         const data = req.body;
         const img = req.file;
 
+       
+
         if (img) {
             const producturl = await ProductProfileURL(img.path)
             data.images = [{ public_id: producturl.public_id, url: producturl.secure_url }]

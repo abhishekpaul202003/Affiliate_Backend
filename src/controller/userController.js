@@ -9,6 +9,8 @@ exports.CreateUser = async (req, res) => {
     try {
         const data = req.body;
         const imgData = req.file;
+       
+        
 
         const { name, email, password } = data;
         const randomOTP = Math.floor(1000 + Math.random() * 9000)
@@ -25,8 +27,9 @@ exports.CreateUser = async (req, res) => {
         }
 
         if (imgData) {
-            const producturl = await userProfileURL(img.path)
-            data.images = [{ public_id: producturl.public_id, url: producturl.secure_url }]
+            
+            const producturl = await userProfileURL(imgData.path)
+            data.profileImg = [{ public_id: producturl.public_id, url: producturl.secure_url }]
         }
 
         data.password = await bcrypt.hash(password, 10)

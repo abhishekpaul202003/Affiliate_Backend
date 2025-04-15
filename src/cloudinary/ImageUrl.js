@@ -10,6 +10,7 @@ require('dotenv').config();
 
 exports.userProfileURL = async(img)=>{
     try{
+        
         const optimizedBuffer = await sharp(img)
         .resize(720, 480, { fit: 'inside', withoutEnlargement: true })
         .jpeg({ quality: 40, mozjpeg: true }).toBuffer();
