@@ -77,7 +77,7 @@ exports.UserLogIn = async (req, res) => {
         const data = req.body;
         const { email, password } = data;
 
-        const findUser = await userModel.findOne({ email: email })
+        const findUser = await userModel.findOne({ email: email,role:'user' })
 
         if (!findUser) return res.status(404).send({ status: false, msg: 'User Not Found pls SignUp' })
 

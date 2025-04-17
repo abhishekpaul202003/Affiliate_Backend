@@ -11,6 +11,7 @@ const transporter = nodemailer.createTransport({
     },
 });
 
+
 exports.OtpVerification = async (name, email, randomOTP) => {
     try {
         const info = await transporter.sendMail({
@@ -55,4 +56,54 @@ exports.OtpVerification = async (name, email, randomOTP) => {
         console.log("Message sent: %s", info.messageId);
     }
     catch (e) { console.log(e.message) }
+}
+
+
+
+exports.AdminOTPVerify = async (name, email, randomOTP) => {
+  try {
+      const info = await transporter.sendMail({
+          from: 'Open Mall',
+          to: email,
+          subject: "Admin Login OTP - Open Mall",
+          text: `Hello ${name},\n\nYour OTP for admin login is: ${randomOTP}\n\nThis OTP is valid for 5 minutes. Do not share it with anyone.\n\nIf you did not initiate this login, please ignore this message.`,
+          html: `
+          <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 40px 0; text-align: center;">
+            <div style="max-width: 500px; background: #ffffff; padding: 30px; margin: auto; border-radius: 10px; 
+                        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); text-align: center;">
+              
+              <h2 style="color: #2c3e50; font-size: 24px; margin-bottom: 10px;">Admin Login Verification</h2>
+              <p style="color: #555; font-size: 16px; margin-bottom: 20px;">
+                Hello <strong>${name}</strong>, use the OTP below to verify your admin login to Open Mall.
+              </p>
+        
+              <div style="display: inline-block; padding: 12px 24px; font-size: 28px; 
+                          font-weight: bold; color: #ffffff; background: #007BFF; 
+                          border-radius: 8px; letter-spacing: 3px;">
+                ${randomOTP}
+              </div>
+        
+              <p style="color: #555; font-size: 14px; margin-top: 20px;">
+                This OTP is valid for <strong>5 minutes</strong>. Please do not share it with anyone.
+              </p>
+        
+              <p style="font-size: 12px; color: #888; margin-top: 20px;">
+                If you did not initiate this login, you can safely ignore this email.
+              </p>
+        
+              <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">
+        
+              <p style="color: #777; font-size: 12px;">
+                © 2025 Open Mall. All rights reserved.
+              </p>
+            </div>
+          </div>
+          `,
+      });
+
+      console.log("OTP email sent to admin: %s", info.messageId);
+  }
+  catch (e) {
+      console.log("Error sending OTP email:", e.message);
+  }
 }

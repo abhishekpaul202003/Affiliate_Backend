@@ -11,6 +11,8 @@ const userSchema = new mongoose.Schema({
     role: { type: String, enum: ['user', 'Admin'], required: true, trim: true },
     otp: { type: String, required: true, trim: true },
     Adminotp: { type: String, required: false, trim: true },
+    isAdminVerify: { type: Boolean, default: false },
+    AdminlOtpExpires: { type: String, required: false, trim: true },
 },
 
     { timestamps: true }
