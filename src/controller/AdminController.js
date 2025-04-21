@@ -59,7 +59,7 @@ exports.AdminOTPVerification = async (req, res) => {
 
         if (!checkUser) return res.status(404).send({ status: false, msg: 'Admin Not Found pls LogIn Again' })
 
-        if (!(otp == checkUser.otp)) return res.status(400).send({ Satus: false, msg: 'Wrong Otp' })
+        if (!(otp == checkUser.Adminotp)) return res.status(400).send({ Satus: false, msg: 'Wrong Otp' })
 
         res.status(200).send({ status: true, msg: "Otp Verify Successfully" })
     }
